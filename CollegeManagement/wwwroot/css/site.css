@@ -1,0 +1,166 @@
+/*Root Config*/
+
+:root {
+    /*===== Default heights/widths =====*/
+    --footer-height: 2rem;
+    --header-height: 3.5rem;
+    /*===== Colors Mode =====*/
+    --first-color: #527992;
+    --first-color-light: #93B1C3;
+    --second-color: #7a5292;
+    --yellow-color: #ffd200;
+    --white-color: rgb(255 255 255);
+    --bg-color: linear-gradient(rgb(82, 121, 146, 0.1),rgb(255, 210, 0, 0.1),rgb(42, 85, 137, 0.1));
+}
+
+html {
+    position: relative;
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+body {
+    height: 90vh;
+    background-image: var(--bg-color);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: auto;
+    margin-bottom: 60px;
+    position: relative;
+    margin: calc(var(--header-height) + 1rem) 0 0 0;
+    padding: 0 1rem;
+}
+
+/*===== HEADER =====*/
+.navbar {
+    height: var(--header-height);
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+/*Avoid Text Decoration on Links*/
+a {
+    text-decoration: none;
+}
+
+/*Active links*/
+.activated {
+    color: var(--white-color);
+}
+
+    .activated::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        width: 2px;
+        height: 32px;
+        background-color: var(--white-color);
+    }
+
+/*Table Align and Style */
+.table > tbody > tr > td {
+    vertical-align: middle;
+}
+
+/*===== Tables Card =====*/
+
+.table_card {
+    background-color: white;
+    border-radius: 6px;
+
+    /*Border*/
+    -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+    .table_card a {
+        text-decoration: none;
+        color: var(--first-color);
+    }
+
+        .table_card a:hover {
+            text-decoration: none;
+            color: var(--yellow-color);
+        }
+
+/*Buttons*/
+.btn_add {
+    background-image: linear-gradient(110deg, var(--first-color),var(--first-color));
+    color: white;
+    opacity: 0.9;
+    border-radius: 6px;
+    padding: 10px 10px 10px 10px;
+    /*Borders*/
+    -moz-box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.3);
+    box-shadow: -1px 0px 4px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
+    transition: background-color linear 3s;
+    transition-delay: 1s;
+}
+
+    .btn_add:hover {
+        background-image: linear-gradient(110deg, var(--first-color),var(--second-color));
+        text-decoration: none;
+        color: white;
+    }
+
+    .btn_add i {
+        padding-right: 5px;
+    }
+
+/*Footer*/
+
+.footer {
+    position: fixed;
+    text-align: center;
+    height: var(--footer-height);
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    margin: 0 auto;
+    line-height: var(--footer-height); /* Vertically center the text there */
+    background-color: rgba(255, 255, 255, 0.4);
+    opacity: 1;
+    backdrop-filter: blur(6px);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #e5e5e5;
+    transition: .5s;
+    z-index: 9999;
+}
+
+    .footer img {
+        width: auto;
+        height: 20px;
+        bottom: 20px;
+        left: 0;
+        object-fit: cover;  classe pra deixa a imagem com a proporção correta e não ficar achatada 
+    }
+
+.footer__feedback {
+    width: 15px;
+    height: 15px;
+    bottom: 10px;
+    display: flex;
+    object-fit: cover;
+    padding-right: 10px;
+    justify-content: center;
+    line-height: 15px;
+    font-size: 10px;
+}
+
+.footer a {
+    color: var(--first-color);
+}

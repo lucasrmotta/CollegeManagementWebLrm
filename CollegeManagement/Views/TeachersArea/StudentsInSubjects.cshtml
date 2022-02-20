@@ -1,0 +1,203 @@
+﻿<h3>Students In Subjects</h3>
+
+<hr />
+
+<div class="row" ng-controller="CoursesCtrl" ng-init="GetAllDataCourses()">
+    <div class="col-lg-6 col-md-12">
+
+        <!--Course Drop--->
+        <div class="row align-items-center">
+
+            <div class="col-6">
+                <div class="form-group">
+                    <h6 class="control-label">Course:</h6>
+                    <select class="form-control" ng-model="CourseSelection">
+                        <option ng-repeat="course in courses" value={{course.idCourse}}>
+                            {{course.dsCourse}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-6">
+                <!-- See all Course Subjects -->
+                <button type="button" class="btn btn_add" ng-click="GetSubjectsCourse()">
+                    <i class="fa fa-eye"></i> &nbsp;See all Subjects
+                </button>
+            </div>
+
+        </div>
+
+        <div class="divList" id="subjectArea">
+
+            <hr />
+            <h4>Subjects List</h4>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <table class="table table-bordered table-hover table_card display" id="subjectsTable">
+                        <thead class="thead-dark">
+                            <tr>
+
+                                <td>
+                                    <b>Name</b>
+                                </td>
+                                <td>
+                                    <b>Teacher Name</b>
+                                </td>
+                                <td>
+                                    <b>Qtd of Students</b>
+                                </td>
+                                <td>
+                                    <b>Options</b>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="subject in subjects">
+
+                                <td>
+                                    {{subject.dsSubject}}
+                                </td>
+                                <td>
+                                    {{subject.name}}
+                                </td>
+                                <td>
+                                    {{subject.studentsQty}}
+                                </td>
+                                <td>
+                                    <a href="#studentsArea" title="Edit" value="Edit" ng-click="GetStudentsSubject(subject)"><i class="fa fa-user"></i>&nbsp;View Students</a>&nbsp;
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <br /><br />
+
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-12">
+
+        <div class="divList" id="studentsArea" style="display:none">
+
+            <div class="row align-items-center">
+                <div class="col-6">
+                    <!-- Add Students to Course -->
+                    <button type="button" class="btn btn_add" ng-click="GetInsertStudent()">
+                        <i class="fa fa-plus"></i> &nbsp;Add Students in Subject
+                    </button>
+                </div>
+            </div>
+
+            <hr />
+
+            <h4 id="subjectDesc"></h4>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <table class="table table-bordered table-hover table_card display" id="subjectsTable">
+                        <thead class="thead-dark">
+                            <tr>
+                                <td>
+                                    <b>Name</b>
+                                </td>
+                                <td>
+                                    <b>Register Number</b>
+                                </td>
+                                <td>
+                                    <b>Grade in Subject</b>
+                                </td>
+                                <td>
+                                    <b>Options</b>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="studentSubject in studentsSubjects">
+
+                                <td>
+                                    {{studentSubject.idStudentRegistrationNumberNavigation.name}}
+                                </td>
+                                <td>
+                                    {{studentSubject.idStudentRegistrationNumber}}
+                                </td>
+                                   <td>
+                                    {{studentSubject.grade}}
+                                </td>
+                                <td>
+                                    <a href="#" title="Edit" value="Edit" ng-click="GetRemoveFromSubject(studentSubject)"><i class="fa fa-cancel"></i>&nbsp;Remove From Subject</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!--===== MODAL CRUD =====-->
+            <div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" id="crud-modal-studentSubject">
+                <div class="modal-dialog modal-md" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-title-student-subject">Add Student and Grade to Subject</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="form-group">
+                                <label class="control-label">Student:</label>
+                                <select class="form-control" ng-model="StudentSubjectName">
+                                    <option ng-repeat="stundetCourse in studentsCourses" value={{stundetCourse.idStudentRegistrationNumber}}>
+                                        {{stundetCourse.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Grade:</label>
+                                <input type="text" class="form-control" id="inputGrade" placeholder="Grade" ng-model="StudentSubjectGrade">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <input type="button" id="btnSave-Student-Subject" class="btn btn-primary" value="Submit" ng-click="InsertStudentSubject()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--===== MODAL REMOVE =====-->
+            <div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" id="remove-modal-student">
+                <div class="modal-dialog modal-md" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-remove-student-title">Remove Student</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to <b style="color:darkred">remove this student </b>from the subject?
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" id="btnRemoveModal-student" class="btn btn-danger" ng-click="RemoveStudentSubject()" value="Remove Student" />
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@Html.Hidden("SubjectID_")
+@Html.Hidden("StudentID_")
+@Html.Hidden("CourseID_")
+
