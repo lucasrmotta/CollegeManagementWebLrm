@@ -1,4 +1,5 @@
 using CollegeManagement.Data;
+using CollegeManagement.HubConfig;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -13,7 +14,7 @@ builder.Services.AddControllersWithViews().AddJsonOptions(x =>
 string startupPath = Environment.CurrentDirectory;
 var ConectionStringLocal = builder.Configuration.GetConnectionString("LocalConnection");
 
-// ---- Replace Content Root Path To User Content ---- //
+//Replace Content Root Path To User Content
 if (ConectionStringLocal.Contains("%CONTENTROOTPATH%"))
 {
     ConectionStringLocal = ConectionStringLocal.Replace("%CONTENTROOTPATH%", startupPath);
@@ -25,6 +26,8 @@ builder.Services.AddDbContext<COLLEGE_MANAGEMENT_DBContext>(options =>
 builder.Services.AddDbContext<global::CollegeManagement.Data.COLLEGE_MANAGEMENT_DBContext>((global::Microsoft.EntityFrameworkCore.DbContextOptionsBuilder options) =>
     options.UseSqlServer(ConectionStringLocal));
 
+// ---- SignalR ---- //
+builder.Services.AddSignalR();
 
 // ----- Builder ----- //
 var app = builder.Build();
@@ -43,6 +46,12 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapHub<ChartHub>("/RealTimeInfo");
+});
 
 app.MapControllerRoute(
     name: "default",

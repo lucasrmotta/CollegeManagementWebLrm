@@ -17,6 +17,10 @@
     {
       "library": "angular-datatables@2.1.0",
       "destination": "wwwroot/lib/angular-datatables/"
+    },
+    {
+      "library": "Chart.js@3.7.1",
+      "destination": "wwwroot/lib/Chart.js/"
     }
   ]
 }

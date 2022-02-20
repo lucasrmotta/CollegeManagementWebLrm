@@ -8,16 +8,81 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CollegeManagement.Data;
 using CollegeManagement.Models;
+using Microsoft.AspNetCore.SignalR;
+using CollegeManagement.HubConfig;
+using CollegeManagement.TimerFeatures;
 
 namespace CollegeManagement.Controllers
 {
     public class CoursesController : Controller
     {
         private readonly COLLEGE_MANAGEMENT_DBContext _context;
+        private readonly IHubContext<ChartHub> _hub;
 
-        public CoursesController(COLLEGE_MANAGEMENT_DBContext context)
+        public CoursesController(COLLEGE_MANAGEMENT_DBContext context, IHubContext<ChartHub> hub)
         {
+            _hub = hub;
             _context = context;
+        }
+
+        //GET RealTimeInfo
+        public async Task<IActionResult> GetCourseInfoAsync()
+        {
+            //List All Courses
+            var courses = await _context.Courses
+                    .Include(Co => Co.Subjects)
+                    .Include(Co => Co.Students)
+                    .Select(Co => new
+                    {
+                        Co.IdCourse,
+                        Co.DsCourse,
+                        StudentsQty = Co.Students.Count(),
+                        SubjectsQty = Co.Subjects.Count()
+
+                    })
+                    .ToListAsync();
+
+            //List All Students In Courses
+            var students = await _context.Students
+                    .ToListAsync();
+
+            //List All Students Grades
+            var studentsGrades = await _context.StudentGrades
+                    .ToListAsync();
+
+            // Join Course and Students
+            var CourseStudents = (
+                from c in courses
+                join st in students on c.IdCourse equals st.IdCourse into cst
+                from courseStudents in cst.DefaultIfEmpty(new Student())
+                join sg in studentsGrades on courseStudents.IdStudentRegistrationNumber equals sg.IdStudentRegistrationNumber into cstg
+                from courseStudentsGrades in cstg.DefaultIfEmpty(new StudentGrade())
+                select new
+                {
+                    c.IdCourse,
+                    c.DsCourse,
+                    c.SubjectsQty,
+                    c.StudentsQty,
+                    IdStudent = (int?)courseStudentsGrades.IdStudentRegistrationNumber ?? 0,
+                    GradeOfStudent = (float?)courseStudentsGrades.Grade ?? 0
+                });
+
+            //Group by and Calculate Average
+            var courseInfoFinal = (
+                from StudentCourseGrade in CourseStudents
+                group StudentCourseGrade by new { StudentCourseGrade.IdCourse, StudentCourseGrade.DsCourse, StudentCourseGrade.StudentsQty, StudentCourseGrade.SubjectsQty } into g
+                select new
+                {
+                    g.Key.IdCourse,
+                    g.Key.DsCourse,
+                    g.Key.SubjectsQty,
+                    g.Key.StudentsQty,
+                    AvgGrade = g.Average(courseInfoFinal => courseInfoFinal.GradeOfStudent)
+                });
+
+
+            var timerManager = new TimerManager(() => _hub.Clients.All.SendAsync("getCoursesInfo", courseInfoFinal));
+            return Ok(new { Message = "Request Completed" });
         }
 
         //GET: Courses

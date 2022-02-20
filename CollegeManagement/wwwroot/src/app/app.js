@@ -518,7 +518,7 @@ app.controller("CoursesCtrl", function ($scope, $http) {
     };
 });
 
-// ---- Teachers ---- //
+// ---- Teachers Controller ---- //
 app.controller("TeachersCtrl", function ($scope, $http) {
 
     // GET ALL
@@ -713,9 +713,7 @@ app.controller("TeachersCtrl", function ($scope, $http) {
     }
 });
 
-
-// ---- Students ---- //
-
+// ---- Students Controller ---- //
 app.controller("StudentsCtrl", function ($scope, $http) {
 
     // GET ALL
@@ -928,3 +926,4 @@ app.controller("StudentsCtrl", function ($scope, $http) {
 
     }
 });
+

@@ -14,7 +14,7 @@
     <script src="~/angular.js/angular.js"></script>
 
     <!-- ===== DataTables ===== -->
-     <link href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 
     <!-- ===== Fonts ===== -->
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
@@ -22,6 +22,8 @@
     <!-- ===== Personalalizations ===== -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CollegeManagement.styles.css" asp-append-version="true" />
+
+
 
 
 </head>
@@ -58,7 +60,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Teachers Area
                             </a>
-                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" asp-area="" asp-controller="TeachersArea" asp-action="StudentsInSubjects">Students and Grades</a>
                             </div>
                         </li>
@@ -97,6 +99,9 @@
     <!--===== GENERAL SCRITPS =====-->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Charts -->
+    <script src="~/lib/Chart.js/chart.min.js" asp-append-version="true"></script>
 
     <!--Angular App -->
     <script src="~/src/app/app.js" asp-append-version="true"></script>
