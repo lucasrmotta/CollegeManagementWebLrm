@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4" id="lblGreetings"></h1>
+    <p>Wellcome to College Management System by Lucas Motta</p>
+</div>
+
+@*<div class="row">
+    <div class="col-lg-6 col-sm-12">
+    <div class="card"></div>
+    </div>
+</div>*@
+
+
+<script>
+    var myDate = new Date();
+    var hrs = myDate.getHours();
+
+    var greet;
+
+    if (hrs < 12)
+        greet = 'Good Morning!';
+    else if (hrs >= 12 && hrs <= 17)
+        greet = 'Good Afternoon!';
+    else if (hrs >= 17 && hrs <= 24)
+        greet = 'Good Evening!';
+
+    document.getElementById('lblGreetings').innerHTML =
+        '<b>' + greet;
+</script>
+
+

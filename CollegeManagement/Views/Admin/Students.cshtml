@@ -1,0 +1,131 @@
+﻿<h3>Students Admin</h3>
+<hr />
+
+<div class="col-lg-6 col-md-12 justify-content-center divList" ng-app="CollegeManagementApp" ng-controller="StudentsCtrl" ng-init="GetAllDataStudents()">
+
+    <!-- Add New Student -->
+    <button type="button" class="btn btn_add" ng-click="GetInsertStudent()">
+        <i class="fa fa-plus"></i> &nbsp;Add New Student
+    </button>
+
+    <hr />
+
+    <h4>List of Students</h4>
+
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+
+            <table class="table table-bordered table-hover table_card" id="studentsTable">
+                <thead class="thead-dark">
+                    <tr>
+                         <td>
+                            <b>Registration Number</b>
+                        </td>
+                        <td>
+                            <b>Name</b>
+                        </td>
+                        <td data-type="date">
+                            <b>Birthday</b>
+                        </td>
+                        <td>
+                            <b>Course</b>
+                        </td>
+                        <td>
+                            <b>Options</b>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="student in students">
+                        <td>
+                             {{student.idStudentRegistrationNumber}}
+                        </td>
+                        <td>
+                            {{student.name}}
+                        </td>
+                        <td>
+                            {{student.birthday | date :'mediumDate'}}
+                        </td>
+                          <td>
+                            {{student.idCourseNavigation.dsCourse}}
+                        </td>
+                        <td>
+                            <a href="#" title="Edit" value="Edit" ng-click="GetUpdateStudent(student)"><i class="fa fa-pencil"></i>&nbsp;Edit</a>&nbsp;|&nbsp;
+                            <a href="#" title="Edit" value="Delete" ng-click="GetDeleteStudent(student)"><i class="fa fa-trash"></i>&nbsp;Delete</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <br /><br />
+
+    <!--===== MODAL CRUD =====-->
+    <div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" id="crud-modal-student">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-title">Add New Student</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label class="control-label">Name:</label>
+                        <input type="text" class="form-control" id="inputStudent" placeholder="Name" ng-model="StudentName">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Birthday:</label>
+                        <input type="date" [ngModel]="dt | date:'dd/MM/yyyy'" class="form-control" id="inputBirthday" placeholder="Birthday" ng-model="StudentBirthday">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Course:</label>
+                        <select class="form-control" ng-init="GetAllDataCourses()" ng-model="StudentCourse">
+                            <option ng-repeat="course in courses" value={{course.idCourse}}>
+                                {{course.dsCourse}}
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="button" id="btnSave-student" class="btn btn-primary" value="Submit" ng-click="InsertData()" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--===== MODAL DELETE =====-->
+    <div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" id="delete-modal-student">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-delete-title">Delete Register</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to <b style="color:darkred">delete this student</b>?
+                </div>
+                <div class="modal-footer">
+                    <input type="button" id="btnDeleteModal-student" class="btn btn-danger" ng-click="DeleteStudent()" />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<pre>{{ closeResult }}</pre>
+
+@Html.Hidden("StudentID_")

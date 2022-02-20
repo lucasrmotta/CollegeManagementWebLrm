@@ -1,0 +1,250 @@
+﻿<h3>Courses Admin</h3>
+<hr />
+
+<div class="row" ng-controller="CoursesCtrl" ng-init="GetAllDataCourses()">
+    @*Courses*@
+    <div class="col-lg-6 col-md-12">
+        <div class="divList">
+
+            <!-- Add New Subject -->
+            <button type="button" class="btn btn_add" ng-click="GetInsertCourse()">
+                <i class="fa fa-plus"></i> &nbsp;Add New Course
+            </button>
+
+            <hr />
+
+            <h4>List of Courses</h4>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <table class="table table-bordered table-hover table_card display" id="coursesTable">
+                        <thead class="thead-dark">
+                            <tr>
+
+                                <td>
+                                    <b>Name</b>
+                                </td>
+                                <td>
+                                    <b>Qty of Subjects</b>
+                                </td>
+                                <td>
+                                    <b>Qty of Students</b>
+                                </td>
+                                <td>
+                                    <b>Avg of Grades</b>
+                                </td>
+                                <td>
+                                    <b>Options</b>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="course in courses">
+
+                                <td>
+                                    {{course.dsCourse}}
+                                </td>
+                                <td>
+                                    {{course.subjectsQty}}
+                                </td>
+                                <td>
+                                    {{course.studentsQty}}
+                                </td>
+                                <td>
+                                    {{course.avgGrade}}
+                                </td>
+                                <td>
+                                    <a href="#" title="Edit" value="Edit Name" ng-click="GetUpdateCourse(course)"><i class="fa fa-pencil"></i>&nbsp;Edit</a>&nbsp;|&nbsp;
+                                    <a href="#subjectArea" title="Edit" value="View Subjects" ng-click="GetIdCourseSubject(course)"><i class="fa fa-eye"></i>&nbsp;View Subjects</a>&nbsp;|&nbsp;
+                                    <a href="#" title="Edit" value="Delete" ng-click="GetDeleteCourse(course)"><i class="fa fa-trash"></i>&nbsp;Delete</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <br /><br />
+
+            <!--===== MODAL CRUD =====-->
+            <div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" id="crud-modal-course">
+                <div class="modal-dialog modal-md" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-title-course">Add New Course</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="form-group">
+                                <label class="control-label">Name:</label>
+                                <input type="text" class="form-control" id="inputCourse" placeholder="Name" ng-model="CourseName">
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <input type="button" id="btnSave-course" class="btn btn-primary" value="Submit" ng-click="InsertDataCourse()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--===== MODAL DELETE =====-->
+            <div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" id="delete-modal-course">
+                <div class="modal-dialog modal-md" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-delete-course-title">Delete Register</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to <b style="color:darkred">delete this course</b>?
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" id="btnDeleteModal-course" class="btn btn-danger" ng-click="DeleteCourse()" />
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Subjects*@
+    <div class="col-lg-6 col-md-12">
+        <div class="divList" id="subjectArea" style="display:none">
+
+            <!-- Add New Subject -->
+            <button type="button" class="btn btn_add" ng-click="GetInsertSubject()">
+                <i class="fa fa-plus"></i> &nbsp;Add New Subject
+            </button>
+
+            <hr />
+
+            <h4>Subjects in Course</h4>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <table class="table table-bordered table-hover table_card display" id="subjectsTable">
+                        <thead class="thead-dark">
+                            <tr>
+
+                                <td>
+                                    <b>Name</b>
+                                </td>
+                                <td>
+                                    <b>Teacher Name</b>
+                                </td>
+                                <td>
+                                    <b>Qtd of Students</b>
+                                </td>
+                                <td>
+                                    <b>Avg of Grades</b>
+                                </td>
+                                <td>
+                                    <b>Options</b>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="subject in subjects">
+
+                                <td>
+                                    {{subject.dsSubject}}
+                                </td>
+                                <td>
+                                    {{subject.name}}
+                                </td>
+                                <td>
+                                    {{subject.studentsQty}}
+                                </td>
+                                <td>
+                                    {{subject.avgGrade | number }}
+                                </td>
+                                <td>
+                                    <a href="#" title="Edit" value="Edit" ng-click="GetUpdateSubject(subject)"><i class="fa fa-pencil"></i>&nbsp;Edit</a>&nbsp;|&nbsp;
+                                    <a href="#" title="Edit" value="Delete" ng-click="GetDeleteSubject(subject)"><i class="fa fa-trash"></i>&nbsp;Delete</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <br /><br />
+
+            <!--===== MODAL CRUD =====-->
+            <div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" id="crud-modal-subject">
+                <div class="modal-dialog modal-md" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-title-subject">Add New Subject</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="form-group">
+                                <label class="control-label">Name:</label>
+                                <input type="text" class="form-control" id="inputSubject" placeholder="Name" ng-model="SubjectName">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Teacher:</label>
+                                <select class="form-control" ng-init="GetAllTeachers()" ng-model="SubjectTeacher">
+                                    <option ng-repeat="teacher in teachers" value={{teacher.idTeacher}}>
+                                        {{teacher.name}}
+                                    </option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <input type="button" id="btnSave-subject" class="btn btn-primary" value="Submit" ng-click="InsertDataSubject()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--===== MODAL DELETE =====-->
+            <div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" id="delete-modal-subject">
+                <div class="modal-dialog modal-md" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-delete-subject-title">Delete Register</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to <b style="color:darkred">delete this subject</b>?
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" id="btnDeleteModal-subject" class="btn btn-danger" ng-click="DeleteSubject()" />
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@Html.Hidden("SubjectID_")
+@Html.Hidden("CourseID_")
+
+<pre>{{ closeResult }}</pre>
