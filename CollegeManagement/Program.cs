@@ -49,12 +49,11 @@ app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapControllers();
-    endpoints.MapHub<ChartHub>("/RealTimeInfo");
-});
-
-app.MapControllerRoute(
+    endpoints.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+    endpoints.MapHub<DashboardHub>("/RealTimeInfo");
+});
+
 
 app.Run();

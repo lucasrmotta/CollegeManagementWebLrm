@@ -8,15 +8,18 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CollegeManagement.Data;
 using CollegeManagement.Models;
+using Microsoft.AspNetCore.SignalR;
+using CollegeManagement.HubConfig;
 
 namespace CollegeManagement.Controllers
 {
     public class TeachersController : Controller
     {
         private readonly COLLEGE_MANAGEMENT_DBContext _context;
-
-        public TeachersController(COLLEGE_MANAGEMENT_DBContext context)
+        private readonly IHubContext<DashboardHub> _hub;
+        public TeachersController(COLLEGE_MANAGEMENT_DBContext context, IHubContext<DashboardHub> hub)
         {
+            _hub = hub;
             _context = context;
         }
 
@@ -59,6 +62,15 @@ namespace CollegeManagement.Controllers
                     {
                         _context.Add(teacher);
                         await _context.SaveChangesAsync();
+
+                        //Atualiza Dashboard
+                        var TeachersCount = _context.Teachers.Count();
+                        var UpdateDashboard = _hub.Clients.All.SendAsync("getTeachersInfo", new
+                        {
+                            teachersQtd = TeachersCount
+                        });
+
+
                         return "Sucess! Teacher Added Successfully";
                     }
                     else
@@ -86,6 +98,13 @@ namespace CollegeManagement.Controllers
                 _context.Teachers.Attach(teacher);
                 _context.Teachers.Remove(teacher);
                 await _context.SaveChangesAsync();
+
+                //Atualiza Dashboard
+                var TeachersCount = _context.Teachers.Count();
+                var UpdateDashboard = _hub.Clients.All.SendAsync("getTeachersInfo", new
+                {
+                    teachersQtd = TeachersCount
+                });
 
                 return "Sucess! Teacher Removed Successfully";
             }
@@ -116,6 +135,16 @@ namespace CollegeManagement.Controllers
                         TeacherObj.Birthday = teacher.Birthday;
                         TeacherObj.Salary = teacher.Salary;
                         await _context.SaveChangesAsync();
+
+                        //Atualiza Dashboard
+                        var TeachersCount = _context.Teachers.Count();
+                        var UpdateDashboard = _hub.Clients.All.SendAsync("getTeachersInfo", new
+                        {
+                            teachersQtd = TeachersCount
+                        });
+
+
+                        return "Sucess! Teacher Updated Successfully";
                     }
                     else
                     {
@@ -127,8 +156,6 @@ namespace CollegeManagement.Controllers
                 {
                     return "Error! Teacher already exists. Try a diferent name";
                 }
-
-                return "Sucess! Teacher Updated Successfully";
             }
             else
             {

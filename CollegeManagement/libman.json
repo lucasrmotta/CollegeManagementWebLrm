@@ -21,6 +21,11 @@
     {
       "library": "Chart.js@3.7.1",
       "destination": "wwwroot/lib/Chart.js/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "@microsoft/signalr@6.0.1",
+      "destination": "wwwroot/lib/microsoft/signalr/"
     }
   ]
 }

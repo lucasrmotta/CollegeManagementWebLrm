@@ -11,26 +11,115 @@
 
 <hr />
 
+<h3>College Informations</h3>
+
+<br />
+
+
 <div class="row">
-    <div class="col-lg-4">
-        <h3>Courses Grades</h3>
-        <div class="card">
-            <div class="card-body">
-                <div style="display: block" *ngIf='signalRService.data'>
-                    <canvas baseChart
-                            [datasets]="signalRService.data"
-                            [labels]="chartLabels"
-                            [options]="chartOptions"
-                            [legend]="chartLegend"
-                            [chartType]="chartType"
-                            [colors]="colors"
-                            (chartClick)="chartClicked($event)">
-                    </canvas>
+    <div class="col-lg-3 col-md-5 col-sm-6">
+
+
+        @*Courses*@
+        <div class="card__info_white">
+            <div class="card__info_white-header">
+                <div class="Brand">
+                    <div class="container">
+                        <span class="icon">
+                            <i class="fa fa-building-columns"></i>
+                        </span>
+                        <span class="title">Academic Information</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card__info_white-body">
+                <div class="IconIntern">
+                    <div class="container">
+                        <span class="icon">
+                            <i class="fa fa-graduation-cap"></i>
+                        </span>
+                        <span class="title" id="CoursesRtInfo">Courses:</span>
+                    </div>
                 </div>
             </div>
         </div>
+
+    </div>
+    <div class="col-lg-3 col-md-5 col-sm-6">
+
+        @*Teachers*@
+        <div class="card__info_white">
+            <div class="card__info_white-header">
+                <div class="Brand">
+                    <div class="container">
+                        <span class="icon">
+                            <i class="fa fa-building-columns"></i>
+                        </span>
+                        <span class="title">Teachers Information</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card__info_white-body">
+                <div class="IconIntern">
+                    <div class="container">
+                        <span class="icon">
+                            <i class="fa fa-chalkboard-user"></i>
+                        </span>
+                        <span class="title" id="TeachersRtInfo">Teachers:</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-lg-3 col-md-5 col-sm-6">
+
+        @*Students*@
+        <div class="card__info_white">
+            <div class="card__info_white-header">
+                <div class="Brand">
+                    <div class="container">
+                        <span class="icon">
+                            <i class="fa fa-building-columns"></i>
+                        </span>
+                        <span class="title">Students Information</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card__info_white-body">
+                <div class="IconIntern">
+                    <div class="container">
+                        <span class="icon">
+                            <i class="fa fa-users"></i>
+                        </span>
+                        <span class="title" id="StudentsRtInfo">Students:</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
+
+@*<table class="table" id="tblUsuario">
+    <thead class="thead-dark">
+    <tr>
+    <th scope="col">Nome</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <td>Uchiha Madara</td>
+    </tr>
+    </tbody>
+    </table>*@
+
+
+
+
+@section Scripts{
+
 
 <script>
     var myDate = new Date();
@@ -49,3 +138,4 @@
         '<b>' + greet;
 </script>
 
+}

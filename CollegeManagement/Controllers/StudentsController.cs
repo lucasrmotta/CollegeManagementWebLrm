@@ -8,15 +8,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CollegeManagement.Data;
 using CollegeManagement.Models;
+using Microsoft.AspNetCore.SignalR;
+using CollegeManagement.HubConfig;
+
 namespace CollegeManagement.Controllers
 {
     public class StudentsController : Controller
     {
         private readonly COLLEGE_MANAGEMENT_DBContext _context;
+        private readonly IHubContext<DashboardHub> _hub;
 
-        public StudentsController(COLLEGE_MANAGEMENT_DBContext context)
+        public StudentsController(COLLEGE_MANAGEMENT_DBContext context, IHubContext<DashboardHub> hub)
         {
             _context = context;
+            _hub = hub;
         }
 
         //GET: Students
@@ -48,7 +53,7 @@ namespace CollegeManagement.Controllers
             return Json(studentsInSubjects);
         }
 
-        //GET students by couser
+        //GET students by course
         public async Task<JsonResult> GetStudentsByCourse(string idCourse, string idSubject)
         {
             int IdCourse = int.Parse(idCourse);
@@ -91,6 +96,14 @@ namespace CollegeManagement.Controllers
                     {
                         _context.Add(student);
                         await _context.SaveChangesAsync();
+
+                        //Atualiza Dashboard
+                        var StudentCount = _context.Students.Count();
+                        var UpdateDashboard = _hub.Clients.All.SendAsync("getStudentsInfo", new
+                        {
+                            studentsQtd = StudentCount
+                        });
+
                         return "Sucess! Student Added Successfully";
                     }
                     else
@@ -118,7 +131,12 @@ namespace CollegeManagement.Controllers
                 _context.Students.Attach(student);
                 _context.Students.Remove(student);
                 await _context.SaveChangesAsync();
-
+                //Atualiza Dashboard
+                var StudentCount = _context.Students.Count();
+                var UpdateDashboard = _hub.Clients.All.SendAsync("getStudentsInfo", new
+                {
+                    studentsQtd = StudentCount
+                });
                 return "Sucess! Student Removed Successfully";
             }
             else
@@ -147,6 +165,15 @@ namespace CollegeManagement.Controllers
                         StudentObj.IdStudentRegistrationNumber = student.IdStudentRegistrationNumber;
                         StudentObj.IdCourse = student.IdCourse;
                         await _context.SaveChangesAsync();
+
+                        //Atualiza Dashboard
+                        var StudentCount = _context.Students.Count();
+                        var UpdateDashboard = _hub.Clients.All.SendAsync("getStudentsInfo", new
+                        {
+                            studentsQtd = StudentCount
+                        });
+
+                        return "Sucess! Student Updated Successfully";
                     }
                     else
                     {
@@ -158,8 +185,6 @@ namespace CollegeManagement.Controllers
                 {
                     return "Error! Student already exists. Try a diferent name";
                 }
-
-                return "Sucess! Student Updated Successfully";
             }
             else
             {
